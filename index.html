@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>todo</title>
+  </head>
+  <body>
+    <input id="title" type="text" placeholder="title" /><br />
+    <br />
+
+    <input id="description" type="text" placeholder="description" /><br />
+    <br />
+    <button id="three" onclick="todo()">add todo</button>
+
+    <div id="container"></div>
+
+    <script>
+      //ugly apporach
+
+      //   function todo() {
+      //     const title = document.getElementById("title").value;
+      //     const description = document.getElementById("description").value;
+      //     const originalhtml = document.getElementById("container").innerHTML;
+      //     document.getElementById("container").innerHTML =
+      //       originalhtml +
+      //       `<div>
+      //           <div>${title}</div>
+      //           <div>${description}</div>
+      //           <button> mark as done </button>
+      //         </div>`;
+      //   }
+
+      //using document.createElement
+      let globalId = 1;
+      function markAsDone(todo) {
+        const parent = document.getElementById(todo);
+        parent.children[2].innerHTML = "Done!";
+      }
+
+      function createChild(title, description, id) {
+        const child = document.createElement("div");
+        const firstchild = document.createElement("div");
+        firstchild.innerHTML = title;
+        const secondchild = document.createElement("div");
+        secondchild.innerHTML = description;
+        const thirdchild = document.createElement("button");
+        thirdchild.innerHTML = "mark as done!";
+        thirdchild.setAttribute("onclick", `markAsDone(${id})`);
+        child.appendChild(firstchild);
+        child.appendChild(secondchild);
+        child.appendChild(thirdchild);
+        child.setAttribute("id", id);
+        return child;
+      }
+
+      function todo() {
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("description").value;
+        const parent = document.getElementById("container");
+
+        parent.appendChild(createChild(title, description, globalId++));
+      }
+      // // using data from outside
+      //       function createChild(title, description, id) {
+      //         const child = document.createElement("div");
+      //         const firstchild = document.createElement("div");
+      //         firstchild.innerHTML = title;
+      //         const secondchild = document.createElement("div");
+      //         secondchild.innerHTML = description;
+      //         const thirdchild = document.createElement("button");
+      //         thirdchild.innerHTML = "mark as done!";
+      //         thirdchild.setAttribute("onclick", `markAsDone(${id})`);
+      //         child.appendChild(firstchild);
+      //         child.appendChild(secondchild);
+      //         child.appendChild(thirdchild);
+      //         child.setAttribute("id", id);
+      //         return child;
+      //       }
+
+      //       function updatetonewstate(state) {
+      //         const parent = document.getElementById("container");
+      //         parent.appendChild(child);
+      //         for (let i = 0; i < state.length; i++) {
+      //           const child = createChild(
+      //             state[i].title,
+      //             state[i].description,
+      //             state[i].id
+      //           );
+      //           parent.appendChild(child);
+      //         }
+      //       }
+      //       window.setInterval(async function () {
+      //         const res = await fetch("https://sum-server.100devsxdevs.com/todos");
+      //         const json = await res.json();
+      //         updatetonewstate(json.todos);
+      //       }, 5000);
+    </script>
+  </body>
+</html>
